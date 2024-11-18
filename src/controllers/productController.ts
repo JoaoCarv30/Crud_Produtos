@@ -11,13 +11,17 @@ export const GetProducts = async(req: Request, res: Response) => {
 export const CreateProduct = async (req: Request, res: Response) => {
     try {
       const { name, description, price, stock } = req.body;
-  
+      const userId = req.userId;  
+      console.log(userId);
+      
+
       const product = await prisma.product.create({
         data: {
+          userId,
           name,
           description,
-          price, // Certifique-se de converter para Float se necessário
-          stock, // Certifique-se de converter para Int se necessário
+          price, 
+          stock, 
         },
       });
   

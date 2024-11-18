@@ -3,13 +3,14 @@ import upload from './config/multer'; // Configuração do Multer
 import { CreateProduct, GetProducts, UpdateProduct, DeleteProduct } from './controllers/productController';
 import { CreateUser, GetUsers } from './controllers/userController';
 import { Authcontroller } from './controllers/authController';
+import { AuthMiddleware } from './middlewares/authMIddleware';
 
 
 export const router = Router();
 
 //ROTAS DE PRODUTOS
 router.get('/products', GetProducts);
-router.post('/products', CreateProduct);
+router.post('/products',AuthMiddleware, CreateProduct);
 router.put('/products/:id', UpdateProduct);
 router.delete('/products/:id', DeleteProduct);
 

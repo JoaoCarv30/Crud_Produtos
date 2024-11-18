@@ -19,7 +19,11 @@ export const CreateUser = async (req: Request, res: Response) => {
 };
 
 export const GetUsers = async (req: Request, res: Response) => {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+        include: {
+            products: true
+        }
+    });
     return res.json(users);
 };
 
