@@ -11,7 +11,6 @@ export const GetProducts = async(req: Request, res: Response) => {
 export const CreateProduct = async (req: Request, res: Response) => {
     try {
       const { name, description, price, stock } = req.body;
-      const imagePath = req.file?.path; // Pega o caminho da imagem enviada pelo Multer
   
       const product = await prisma.product.create({
         data: {
@@ -19,7 +18,6 @@ export const CreateProduct = async (req: Request, res: Response) => {
           description,
           price, // Certifique-se de converter para Float se necessário
           stock, // Certifique-se de converter para Int se necessário
-          Image: imagePath, // Salva o caminho da imagem
         },
       });
   
@@ -33,7 +31,6 @@ export const CreateProduct = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const { name, description, price, stock } = req.body;
-      const imagePath = req.file?.path; // Pega o novo caminho da imagem, se enviado
   
       const product = await prisma.product.update({
         where: { id },
@@ -42,7 +39,6 @@ export const CreateProduct = async (req: Request, res: Response) => {
           description,
           price,
           stock,
-          ...(imagePath && { Image: imagePath }), // Atualiza a imagem apenas se enviada
         },
       });
   
@@ -56,9 +52,13 @@ export const DeleteProduct = async(req: Request, res: Response) => {
 
     const {id} = req.params;
 
-    await prisma.product.delete({
-        where: {id: Number(id)}
-    });
+    await prisma.product.delete(
+      {
+        where: {
+          id: id
+        }
+      }
+    )
 
     return res.status(204).send("Product deleted");
 }
