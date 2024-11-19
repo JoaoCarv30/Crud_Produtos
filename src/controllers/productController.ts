@@ -9,27 +9,38 @@ export const GetProducts = async(req: Request, res: Response) => {
 
 }
 export const CreateProduct = async (req: Request, res: Response) => {
-    try {
-      const { name, description, price, stock } = req.body;
-      const userId = req.userId;  
-      console.log(userId);
-      
+  try {
+    const { name, description, price, stock } = req.body;
+    const userId = req.userId;
 
-      const product = await prisma.product.create({
-        data: {
-          userId,
-          name,
-          description,
-          price, 
-          stock, 
-        },
-      });
-  
-      return res.status(201).json(product);
-    } catch (error) {
-      return res.status(500).json({ error: 'Erro ao criar produto', details: error.message });
+    // Verificar se o arquivo foi enviado
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'Imagem é obrigatória' });
     }
-  };
+
+    // Obter o caminho da imagem salva
+    const imagePath = file.filename; // Nome gerado pelo multer
+
+    // Criar o produto no banco de dados
+    const product = await prisma.product.create({
+      data: {
+        userId,
+        name,
+        description,
+        price: parseFloat(price), // Garantir que o preço seja numérico
+        stock: parseInt(stock, 10), // Garantir que o estoque seja numérico
+        Image: imagePath, // Salvar o nome do arquivo no banco
+      },
+    });
+
+    return res.status(201).json(product);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: 'Erro ao criar produto', details: error.message });
+  }
+};
   
   export const UpdateProduct = async (req: Request, res: Response) => {
     try {

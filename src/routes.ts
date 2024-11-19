@@ -10,7 +10,8 @@ export const router = Router();
 
 //ROTAS DE PRODUTOS
 router.get('/products', GetProducts);
-router.post('/products',AuthMiddleware, CreateProduct);
+router.post('/products', AuthMiddleware, upload.single('Image'), CreateProduct);
+
 router.put('/products/:id', UpdateProduct);
 router.delete('/products/:id', DeleteProduct);
 
