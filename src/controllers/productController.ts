@@ -1,13 +1,25 @@
 import { prisma } from "../database/prisma";
 import { Request, Response } from 'express';
 
-export const GetProducts = async(req: Request, res: Response) => {
-
-    const products = await prisma.product.findMany();
+export const GetProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await prisma.product.findMany({
+      include: {
+        User: {
+          select: {
+            name: true, // Apenas o nome do usuário
+          },
+        },
+      },
+    });
 
     return res.json(products);
-
-}
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Erro ao buscar produtos", details: error.message });
+  }
+};
 export const CreateProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, stock } = req.body;

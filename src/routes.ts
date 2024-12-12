@@ -26,3 +26,4 @@ router.get('/users', GetUsers);
 
 // ROTAS DE AUTENTICAÇÃO
 router.post('/auth', Authcontroller);
+
