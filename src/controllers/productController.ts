@@ -8,6 +8,7 @@ export const GetProducts = async (req: Request, res: Response) => {
         User: {
           select: {
             name: true, // Apenas o nome do usuário
+            phone: true, // Apenas o telefone do usuário
           },
         },
       },

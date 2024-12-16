@@ -5,13 +5,14 @@ import bcrypt from 'bcryptjs';
 
 
 export const CreateUser = async (req: Request, res: Response) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone} = req.body;
     const hashPassword = bcrypt.hashSync(password, 8);
 
     const user = await prisma.user.create({
         data: {
             name,
             email,
+            phone,
             password : hashPassword
         }
     });
