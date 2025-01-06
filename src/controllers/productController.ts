@@ -90,3 +90,16 @@ export const DeleteProduct = async(req: Request, res: Response) => {
 
     return res.status(204).send("Product deleted");
 }
+
+export const GetUserProducts = async (req: Request, res: Response) => {
+
+  const userId = req.userId;
+
+  const products = await prisma.product.findMany({
+    where: {
+      userId
+    }
+  });
+
+  return res.json(products);
+}

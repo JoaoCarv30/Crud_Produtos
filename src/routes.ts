@@ -1,7 +1,7 @@
 import express from 'express';
 import { Router } from 'express';
 import upload from './config/multer'; // Configuração do Multer
-import { CreateProduct, GetProducts, UpdateProduct, DeleteProduct } from './controllers/productController';
+import { CreateProduct, GetProducts, UpdateProduct, DeleteProduct, GetUserProducts } from './controllers/productController';
 import { CreateUser, GetUsers } from './controllers/userController';
 import { Authcontroller } from './controllers/authController';
 import { AuthMiddleware } from './middlewares/authMIddleware';
@@ -23,6 +23,9 @@ router.use("/images", express.static("uploads")); // Rota para acessar as imagen
 // ROTAS DE USUÁRIOS
 router.post('/users', CreateUser);
 router.get('/users', GetUsers);
+
+router.get('/users/products', AuthMiddleware, GetUserProducts);
+
 
 // ROTAS DE AUTENTICAÇÃO
 router.post('/auth', Authcontroller);
